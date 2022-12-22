@@ -15,16 +15,24 @@ export const fetchThunk = createAsyncThunk(
 
 export const AddThunk = createAsyncThunk(
   'contacts/addContacts',
-  async contact => {
-    const response = await addContacts(contact);
-    return response.data;
+  async (contact, { rejectWithValue }) => {
+    try {
+      const response = await addContacts(contact);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );
 
 export const deleteThunk = createAsyncThunk(
   'contacts/deleteContacts',
-  async id => {
-    await deleteContacts(id);
-    return id;
+  async (id, { rejectWithValue }) => {
+    try {
+      await deleteContacts(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );

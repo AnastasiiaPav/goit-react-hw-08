@@ -1,47 +1,50 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchThunk } from 'Redux/contactsActions';
+import { useDispatch} from 'react-redux';
+import { lazy } from 'react';
+import { refreshThunk } from 'Redux/userOperations';
+import { Route, Routes } from 'react-router-dom';
+import Loyout from 'page/Loyout';
 import { useEffect } from 'react';
-import { Loader } from './Loader';
-import { Form } from './FormApp';
-import { ContactList } from './ContactList';
-import { Filter } from './Filter';
+import RestrictedRoute from './RestRoute';
+import PrivateRoute from './PrivateRoute';
+
+
+const Home = lazy (() => import('page/Home'))
+const Login =  lazy (() => import('page/Login'))
+const Register = lazy(() => import('page/Registratoin'))
+const Contacts = lazy(() => import('page/Contact'))
 
 export const App = () => {
-  const contacts = useSelector(state => state.contacts.items);
-  const filterVal = useSelector(state => state.filter.value);
-  const loading = useSelector(state => state.contacts.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchThunk());
+    dispatch(refreshThunk());
   }, [dispatch]);
 
 
-  const onFilterSearch = () => {
-    const inputSearch = filterVal.toLowerCase();
-    if (contacts?.length !== []) {
-      const filtContact = contacts.filter(contact =>
-        contact.name.toLowerCase().includes(inputSearch)
-      );
-      return filtContact;
-    }
-  };
-
-
-
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <Form />
-      <h2>Contacts</h2>
-      <Filter value={filterVal} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <ContactList
-          contacts={onFilterSearch()}
-        />
-      )}
-    </div>
+    <Routes>
+    <Route path="/" element={<Loyout />}>
+      <Route index element={<Home />} />
+      <Route
+        path="/login"
+        element={
+          <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <RestrictedRoute redirectTo="/contacts" component={<Register />} />
+        }
+      />
+      <Route
+        path="/contacts"
+        element={
+          <PrivateRoute redirectTo="/login" component={<Contacts />} />
+        }
+      />
+    </Route>
+    <Route path="*" element={<h1>Page not found</h1>} />
+  </Routes>
   );
 };

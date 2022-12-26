@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { registerThunk } from 'Redux/userOperations';
 
+
 const Registration = () => {
   const dispatch = useDispatch();
 

@@ -28,19 +28,19 @@ export const App = () => {
       <Route
         path="/login"
         element={
-          <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+          <RestrictedRoute redirectTo="/login" component={<Login />} />
         }
       />
       <Route
         path="/register"
         element={
-          <RestrictedRoute redirectTo="/registr" component={<Register />} />
+          <RestrictedRoute redirectTo="/register" component={<Register />} />
         }
       />
       <Route
         path="/contacts"
         element={
-          <PrivateRoute redirectTo="/login" component={<Contacts />} />
+          <PrivateRoute redirectTo="/contacts" component={<Contacts />} />
         }
       />
     </Route>

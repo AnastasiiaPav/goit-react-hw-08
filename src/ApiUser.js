@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const registerUser  = async user => {
 const response = await axios.post('https://connections-api.herokuapp.com/users/signup', user)
 return response
@@ -10,7 +11,7 @@ export const loginUser  = async user => {
     return response
 }
 
-export const logoutUser = async user => {
+export const logoutUser = async user  => {
     const response = await axios.post('https://connections-api.herokuapp.com/users/logout', user)
     return response
 }

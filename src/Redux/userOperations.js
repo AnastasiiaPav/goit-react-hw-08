@@ -4,7 +4,7 @@ import { loginUser, logoutUser, refreshUser, registerUser } from 'ApiUser';
 
 const token = {
   set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    axios.defaults.headers.common.Authorization = `${token}`;
   },
 
   unset() {
@@ -17,13 +17,12 @@ export const registerThunk = createAsyncThunk(
   async (user, { rejectWithValue }) => {
     try {
       const response = await registerUser(user);
-      token.set(response.data.token);
       alert(`Registration passed, welcome ${response.data.user.name}`);
       return response.data;
     } catch (error) {
       if (error.response.status === 400) {
         alert(
-          `Passwork must contain letters, numbers and be loanger than 6 characters`
+          `Password must contain letters, numbers and be loanger than 6 characters`
         );
       }
       return rejectWithValue(error);
